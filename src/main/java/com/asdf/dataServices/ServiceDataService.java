@@ -10,6 +10,8 @@ import com.asdf.managers.ServiceManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,22 +75,27 @@ public class ServiceDataService {
 
     public List<ServiceResource> resetServiceResources() {
         List<ServiceResource> old = deleteServiceResources();
-        ObjectMapper objectMapper = new ObjectMapper();
+
+        RestTemplate restTemplate = new RestTemplate();
         try {
-            ServiceDto[] emps = objectMapper.readValue(new File("src\\main\\resources\\services.json"), ServiceDto[].class);
-            for(ServiceDto emp : emps){
+            ServiceDto[] response = restTemplate.getForObject(
+                    "https://api.mockaroo.com/api/bfe87fc0?count=10&key=e507b8a0",
+                    ServiceDto[].class);
+            for (ServiceDto emp : response) {
                 addServiceDto(emp);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (RestClientResponseException e) {
         }
+
         return old;
     }
+
     public List<ServiceResource> deleteServiceResources() {
         List<ServiceResource> old = getServiceResources();
         serviceManager.deleteAllServiceResources();
         return old;
     }
+
     private ServiceResource serToRes(Service ser) {
         ServiceResource serres = new ServiceResource();
 
