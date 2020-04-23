@@ -10,7 +10,7 @@ import java.util.*;
 
 @Component
 public class EmployeeDataService {
-    private static final String EMPLOYEE_URL = "http://localhost:6100/serviceBackend/employees/";
+    private static final String EMPLOYEE_URL = "https://employee-microservice.herokuapp.com/serviceBackend/employees/";
 
     public EmployeeResource getEmployee(int emp_id) {
         RestTemplate restTemplate = new RestTemplate();
