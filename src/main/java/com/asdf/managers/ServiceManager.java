@@ -107,4 +107,7 @@ public class ServiceManager {
         return sere;
     }
 
+    public void deleteAllServiceResources() {
+        serviceRepository.deleteAll();
+    }
 }

@@ -18,10 +18,20 @@ public class RESTController {
     @Autowired
     private ServiceDataService serviceDataService;
 
+    @RequestMapping(value ="/reset", method = RequestMethod.GET)
+    public HttpEntity<List<ServiceResource>> resetEmployees() {
+        return new HttpEntity<>(serviceDataService.resetServiceResources());
+    }
     @RequestMapping(value ="/services", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getAllServices() {
         return new HttpEntity<>(serviceDataService.getServiceResources());
     }
+
+    @RequestMapping(value ="/employees/clear", method = RequestMethod.DELETE)
+    public HttpEntity<List<ServiceResource>> deleteAllEmployees() {
+        return new HttpEntity<>(serviceDataService.deleteServiceResources());
+    }
+
 
     @RequestMapping(value ="/services/{skip}/{amount}", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip,@PathVariable int amount) {

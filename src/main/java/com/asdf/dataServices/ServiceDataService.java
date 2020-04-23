@@ -7,9 +7,12 @@ import com.asdf.dataObjects.service.ServiceResource;
 import com.asdf.exceptions.rest.InvalidDataExceptionMS;
 import com.asdf.exceptions.rest.ResourceNotFoundExceptionMS;
 import com.asdf.managers.ServiceManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,6 +71,24 @@ public class ServiceDataService {
         return sers;
     }
 
+    public List<ServiceResource> resetServiceResources() {
+        List<ServiceResource> old = deleteServiceResources();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            ServiceDto[] emps = objectMapper.readValue(new File("src\\main\\resources\\services.json"), ServiceDto[].class);
+            for(ServiceDto emp : emps){
+                addServiceDto(emp);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return old;
+    }
+    public List<ServiceResource> deleteServiceResources() {
+        List<ServiceResource> old = getServiceResources();
+        serviceManager.deleteAllServiceResources();
+        return old;
+    }
     private ServiceResource serToRes(Service ser) {
         ServiceResource serres = new ServiceResource();
 
