@@ -99,9 +99,6 @@ public class ServiceManager {
 
     public ServiceEntity convertServiceToEntity(Service ser) {
         ServiceEntity sere = new ServiceEntity();
-        if (ser.getId() != -1) {
-            sere.setId(ser.getId());
-        }
         sere.setDate(ser.getDate());
         sere.setEmployeeId(ser.getEmployeeId());
         sere.setLatitude(ser.getLatitude());

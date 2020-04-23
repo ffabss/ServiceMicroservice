@@ -33,8 +33,8 @@ public class ServiceDataService {
 
         Service service = serDtoToService(serviceDto);
 
-        serviceManager.addService(service);
-        return serToRes(service);
+        Service res = serviceManager.addService(service);
+        return serToRes(res);
     }
 
     private Service serDtoToService(ServiceDto serviceDto) {
