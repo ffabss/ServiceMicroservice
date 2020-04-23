@@ -1,6 +1,8 @@
 package com.asdf.dataServices;
 
+import antlr.collections.impl.LList;
 import com.asdf.dataObjects.employee.EmployeeResource;
+import com.asdf.exceptions.ResourceNotFoundException;
 import com.asdf.exceptions.rest.InternalServerException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
@@ -10,18 +12,18 @@ import java.util.*;
 
 @Component
 public class EmployeeDataService {
-    private static final String EMPLOYEE_URL = "https://employee-microservice.herokuapp.com/serviceBackend/employees/";
+    private static final String EMPLOYEE_URL = "https://employee-microservice.herokuapp.com/serviceBackend/";
 
-    public EmployeeResource getEmployee(int emp_id) {
+    public EmployeeResource getEmployee(int emp_id) throws ResourceNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = EMPLOYEE_URL + emp_id;
+        String url = EMPLOYEE_URL + "employees/" + emp_id;
         try {
             EmployeeResource response = restTemplate.getForObject(
                     url,
                     EmployeeResource.class);
             return response;
         } catch (RestClientResponseException e) {
-            throw new InternalServerException(e);
+            throw new ResourceNotFoundException(e.getMessage());
         }
     }
 
@@ -38,14 +40,14 @@ public class EmployeeDataService {
         }
     }
 
-    public int[] getValidIds(){
+    public List<Integer> getValidIds() {
         RestTemplate restTemplate = new RestTemplate();
         String url = EMPLOYEE_URL + "validIds";
         try {
-            int[] response = restTemplate.getForObject(
+            Integer[] response = restTemplate.getForObject(
                     url,
-                    int[].class);
-            return response;
+                    Integer[].class);
+            return response == null ? new ArrayList() : Arrays.asList(response);
         } catch (RestClientResponseException e) {
             throw new InternalServerException(e);
         }
