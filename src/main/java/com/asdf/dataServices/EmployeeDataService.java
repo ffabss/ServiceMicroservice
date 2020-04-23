@@ -37,4 +37,17 @@ public class EmployeeDataService {
             throw new InternalServerException(e);
         }
     }
+
+    public int[] getValidIds(){
+        RestTemplate restTemplate = new RestTemplate();
+        String url = EMPLOYEE_URL + "validIds";
+        try {
+            int[] response = restTemplate.getForObject(
+                    url,
+                    int[].class);
+            return response;
+        } catch (RestClientResponseException e) {
+            throw new InternalServerException(e);
+        }
+    }
 }
