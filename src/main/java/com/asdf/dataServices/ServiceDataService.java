@@ -66,6 +66,8 @@ public class ServiceDataService {
         serres.setEmployee(employeeDataService.getEmployee(ser.getEmployeeId()));
         serres.setId(ser.getId());
         serres.setAddress(locationIQDataService.getAddress(ser.getLongitude(),ser.getLatitude()));
+        serres.setLongitude(ser.getLongitude());
+        serres.setLatitude(ser.getLatitude());
         serres.setName(ser.getName());
 
         return serres;
