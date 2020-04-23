@@ -23,6 +23,11 @@ public class RESTController {
         return new HttpEntity<>(serviceDataService.getServiceResources());
     }
 
+    @RequestMapping(value ="/services/{skip}/{amount}", method = RequestMethod.GET)
+    public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip,@PathVariable int amount) {
+        return new HttpEntity<>(serviceDataService.getServiceResources(skip,amount));
+    }
+
     @RequestMapping(value ="/services", method = RequestMethod.POST)
     public ServiceResource addService(@RequestBody ServiceDto serviceDto){
         return serviceDataService.addServiceDto(serviceDto);
@@ -42,9 +47,10 @@ public class RESTController {
     public ServiceResource deleteService(@PathVariable int serviceId,@RequestBody ServiceDto serviceDto){
         return serviceDataService.putService(serviceId,serviceDto);
     }
-
+/*
     @RequestMapping(value ="/services/{serviceId}/address", method = RequestMethod.GET)
     public String getAddressOfService(@PathVariable int serviceId){
         return serviceDataService.getAddressOfService(serviceId);
     }
+    */
 }
