@@ -1,9 +1,11 @@
 package com.asdf.dataServices;
 
+import com.asdf.dataObjects.employee.EmployeeResource;
 import com.asdf.dataObjects.location.LongitudeLatitude;
 import com.asdf.dataObjects.service.Service;
 import com.asdf.dataObjects.service.ServiceDto;
 import com.asdf.dataObjects.service.ServiceResource;
+import com.asdf.exceptions.ResourceNotFoundException;
 import com.asdf.exceptions.rest.InvalidDataExceptionMS;
 import com.asdf.exceptions.rest.ResourceNotFoundExceptionMS;
 import com.asdf.managers.ServiceManager;
@@ -76,7 +78,7 @@ public class ServiceDataService {
     public List<ServiceResource> resetServiceResources() {
         List<ServiceResource> old = deleteServiceResources();
 
-        int[] ids = employeeDataService.getValidIds();
+        List<Integer> ids = employeeDataService.getValidIds();
         int currIDX = 0;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -86,8 +88,8 @@ public class ServiceDataService {
                     ServiceDto[].class);
             for (ServiceDto emp : response) {
                 if (emp.getEmployeeId() == -1) {
-                    emp.setEmployeeId(ids[currIDX++]);
-                    if (currIDX > ids.length) {
+                    emp.setEmployeeId(ids.get(currIDX++));
+                    if (currIDX > ids.size()) {
                         currIDX = 0;
                     }
                 }
@@ -109,7 +111,11 @@ public class ServiceDataService {
         ServiceResource serres = new ServiceResource();
 
         serres.setDate(ser.getDate());
-        serres.setEmployee(employeeDataService.getEmployee(ser.getEmployeeId()));
+        try {
+            serres.setEmployee(employeeDataService.getEmployee(ser.getEmployeeId()));
+        } catch (ResourceNotFoundException e) {
+            serres.setEmployee(new EmployeeResource());
+        }
         serres.setId(ser.getId());
         serres.setAddress(locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()));
         serres.setLongitude(ser.getLongitude());
