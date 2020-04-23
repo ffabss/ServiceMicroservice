@@ -12,6 +12,7 @@ import com.asdf.managers.ServiceManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
@@ -113,7 +114,7 @@ public class ServiceDataService {
         serres.setDate(ser.getDate());
         try {
             serres.setEmployee(employeeDataService.getEmployee(ser.getEmployeeId()));
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException | HttpClientErrorException e) {
             serres.setEmployee(new EmployeeResource());
         }
         serres.setId(ser.getId());
