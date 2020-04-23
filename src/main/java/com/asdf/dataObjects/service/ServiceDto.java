@@ -10,5 +10,4 @@ public class ServiceDto {
     private int employeeId;
     private Date date;
     private String address;
-
 }

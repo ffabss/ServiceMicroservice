@@ -3,16 +3,25 @@ package com.asdf.managers;
 import com.asdf.dataObjects.service.Service;
 import com.asdf.dataObjects.service.ServiceEntity;
 import com.asdf.database.ServiceRepository;
+import javafx.print.PageRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class ServiceManager {
-
+    @Autowired
+    EntityManager entityManager;
     @Autowired
     private ServiceRepository serviceRepository;
 
@@ -25,6 +34,27 @@ public class ServiceManager {
     public List<Service> getServices() {
         List<Service> sers = new ArrayList<>();
         for (ServiceEntity sere : serviceRepository.findAll()) {
+            sers.add(convertEntityToService(sere));
+        }
+        return sers;
+    }
+
+
+    public List<Service> getServices(int skip, int amount) {
+        List<Service> sers = new ArrayList<>();
+
+        CriteriaBuilder criteriaBuilder = entityManager
+                .getCriteriaBuilder();
+        CriteriaQuery<ServiceEntity> criteriaQuery = criteriaBuilder
+                .createQuery(ServiceEntity.class);
+        Root<ServiceEntity> from = criteriaQuery.from(ServiceEntity.class);
+        CriteriaQuery<ServiceEntity> select = criteriaQuery.select(from);
+        TypedQuery<ServiceEntity> typedQuery = entityManager.createQuery(select);
+        typedQuery.setFirstResult(skip);
+        typedQuery.setMaxResults(amount);
+        List<ServiceEntity> resultList = typedQuery.getResultList();
+
+        for (ServiceEntity sere : resultList) {
             sers.add(convertEntityToService(sere));
         }
         return sers;

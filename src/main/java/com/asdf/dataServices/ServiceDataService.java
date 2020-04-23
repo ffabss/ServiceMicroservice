@@ -59,13 +59,24 @@ public class ServiceDataService {
         return sers;
     }
 
+
+    public List<ServiceResource> getServiceResources(int skip, int amount) {
+        List<ServiceResource> sers = new ArrayList<>();
+        for (Service ser : serviceManager.getServices(skip, amount)) {
+            sers.add(serToRes(ser));
+        }
+        return sers;
+    }
+
     private ServiceResource serToRes(Service ser) {
         ServiceResource serres = new ServiceResource();
 
         serres.setDate(ser.getDate());
         serres.setEmployee(employeeDataService.getEmployee(ser.getEmployeeId()));
         serres.setId(ser.getId());
-        serres.setAddress(locationIQDataService.getAddress(ser.getLongitude(),ser.getLatitude()));
+        serres.setAddress(locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()));
+        serres.setLongitude(ser.getLongitude());
+        serres.setLatitude(ser.getLatitude());
         serres.setName(ser.getName());
 
         return serres;

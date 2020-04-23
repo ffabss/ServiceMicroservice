@@ -12,4 +12,6 @@ public class ServiceResource {
     private EmployeeResource employee;
     private Date date;
     private String address;
+    private String latitude;
+    private String longitude;
 }
