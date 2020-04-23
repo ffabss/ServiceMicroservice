@@ -24,8 +24,8 @@ public class ServiceManager {
 
     public Service addService(Service service) {
         ServiceEntity sere = convertServiceToEntity(service);
-        serviceRepository.save(sere);
-        return convertEntityToService(sere);
+        ServiceEntity res = serviceRepository.save(sere);
+        return convertEntityToService(res);
     }
 
     public List<Service> getServices() {
