@@ -3,13 +3,10 @@ package com.asdf.managers;
 import com.asdf.dataObjects.service.Service;
 import com.asdf.dataObjects.service.ServiceEntity;
 import com.asdf.database.ServiceRepository;
-import javafx.print.PageRange;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -102,9 +99,6 @@ public class ServiceManager {
 
     public ServiceEntity convertServiceToEntity(Service ser) {
         ServiceEntity sere = new ServiceEntity();
-        if (ser.getId() != -1) {
-            sere.setId(ser.getId());
-        }
         sere.setDate(ser.getDate());
         sere.setEmployeeId(ser.getEmployeeId());
         sere.setLatitude(ser.getLatitude());

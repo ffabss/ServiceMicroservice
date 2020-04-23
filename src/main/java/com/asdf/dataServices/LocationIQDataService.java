@@ -3,7 +3,6 @@ package com.asdf.dataServices;
 import com.asdf.dataObjects.location.LocationResource;
 import com.asdf.dataObjects.location.LongitudeLatitude;
 import com.asdf.exceptions.rest.InternalServerException;
-import com.sun.org.apache.xpath.internal.objects.XString;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -14,9 +13,13 @@ import java.util.Map;
 @Component
 public class LocationIQDataService {
     private static final String LOCATION_IQ_URL = "https://eu1.locationiq.com/v1/search.php?key={apiKey}&q={searchString}&format=json";
-    private int currentKeyID = 0;
-    private static final String[] API_KEYs = {"<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>"};
     private static final String LOCATION_IQ_REVERSE_URL = "https://eu1.locationiq.com/v1/reverse.php?key={apiKey}&lat={lat}&lon={lon}&format=json";
+
+    private final int MAX_TRIES = 10;
+    private int currentKeyID = 0;
+    private static final String[] API_KEYs = {"<API_KEY>", "<API_KEY>",
+            "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
+            "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>"};
 
     private String getCurrentKey() {
         return API_KEYs[currentKeyID];
@@ -30,7 +33,7 @@ public class LocationIQDataService {
     }
 
     public LongitudeLatitude getLongitudeLatitudeByAddress(String address) {
-        return getLongitudeLatitudeByAddress(address, 5);
+        return getLongitudeLatitudeByAddress(address, MAX_TRIES);
     }
 
     public LongitudeLatitude getLongitudeLatitudeByAddress(String address, int triesLeft) {
@@ -86,6 +89,6 @@ public class LocationIQDataService {
     }
 
     public String getAddress(LongitudeLatitude longitudeLatitude) {
-        return getAddress(longitudeLatitude, 5);
+        return getAddress(longitudeLatitude, MAX_TRIES);
     }
 }
