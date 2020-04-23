@@ -79,7 +79,7 @@ public class ServiceDataService {
         RestTemplate restTemplate = new RestTemplate();
         try {
             ServiceDto[] response = restTemplate.getForObject(
-                    "https://api.mockaroo.com/api/bfe87fc0?count=10&key=e507b8a0",
+                    "https://my.api.mockaroo.com/servicedto.json?key=e507b8a0",
                     ServiceDto[].class);
             for (ServiceDto emp : response) {
                 addServiceDto(emp);
