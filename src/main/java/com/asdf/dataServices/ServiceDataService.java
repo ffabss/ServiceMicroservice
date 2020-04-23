@@ -76,12 +76,21 @@ public class ServiceDataService {
     public List<ServiceResource> resetServiceResources() {
         List<ServiceResource> old = deleteServiceResources();
 
+        int[] ids = employeeDataService.getValidIds();
+        int currIDX = 0;
+
         RestTemplate restTemplate = new RestTemplate();
         try {
             ServiceDto[] response = restTemplate.getForObject(
                     "https://my.api.mockaroo.com/servicedto.json?key=e507b8a0",
                     ServiceDto[].class);
             for (ServiceDto emp : response) {
+                if (emp.getEmployeeId() == -1) {
+                    emp.setEmployeeId(ids[currIDX++]);
+                    if (currIDX > ids.length) {
+                        currIDX = 0;
+                    }
+                }
                 addServiceDto(emp);
             }
         } catch (RestClientResponseException e) {
