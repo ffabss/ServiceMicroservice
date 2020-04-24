@@ -23,7 +23,7 @@ public class RESTController {
         return resetEmployees(10);
     }
 
-    @RequestMapping(value = "/reset/{amount:[\\\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reset/{amount}", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> resetEmployees(@PathVariable int amount) {
         return new HttpEntity<>(serviceDataService.resetServiceResources(amount));
     }
@@ -44,7 +44,7 @@ public class RESTController {
     }
 
 
-    @RequestMapping(value = "/services/{skip:[\\\\d]+}/{amount:[\\\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/services/{skip}/{amount}", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount) {
         return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount));
     }
@@ -54,24 +54,18 @@ public class RESTController {
         return serviceDataService.addServiceDto(serviceDto);
     }
 
-    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
     public ServiceResource getService(@PathVariable int serviceId) {
         return serviceDataService.getServiceResource(serviceId);
     }
 
-    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.DELETE)
     public ServiceResource deleteService(@PathVariable int serviceId) {
         return serviceDataService.deleteService(serviceId);
     }
 
-    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
     public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto serviceDto) {
         return serviceDataService.putService(serviceId, serviceDto);
     }
-/*
-    @RequestMapping(value ="/services/{serviceId}/address", method = RequestMethod.GET)
-    public String getAddressOfService(@PathVariable int serviceId){
-        return serviceDataService.getAddressOfService(serviceId);
-    }
-    */
 }
