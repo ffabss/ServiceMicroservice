@@ -23,7 +23,7 @@ public class RESTController {
         return new HttpEntity<>(serviceDataService.resetServiceResources());
     }
 
-    @RequestMapping(value = "/services/count", method = RequestMethod.GET)
+    @RequestMapping(value = "/countServices", method = RequestMethod.GET)
     public HttpEntity<Long> countServices() {
         return new HttpEntity<>(serviceDataService.countServices());
     }
@@ -33,7 +33,7 @@ public class RESTController {
         return new HttpEntity<>(serviceDataService.getServiceResources());
     }
 
-    @RequestMapping(value = "/employees/clear", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/clearServices", method = RequestMethod.DELETE)
     public HttpEntity<List<ServiceResource>> deleteAllEmployees() {
         return new HttpEntity<>(serviceDataService.deleteServiceResources());
     }
