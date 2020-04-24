@@ -20,7 +20,12 @@ public class RESTController {
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> resetEmployees() {
-        return new HttpEntity<>(serviceDataService.resetServiceResources());
+        return resetEmployees(10);
+    }
+
+    @RequestMapping(value = "/reset/{amount:[\\\\d]+}", method = RequestMethod.GET)
+    public HttpEntity<List<ServiceResource>> resetEmployees(@PathVariable int amount) {
+        return new HttpEntity<>(serviceDataService.resetServiceResources(amount));
     }
 
     @RequestMapping(value = "/countServices", method = RequestMethod.GET)
@@ -39,7 +44,7 @@ public class RESTController {
     }
 
 
-    @RequestMapping(value = "/services/{skip}/{amount}", method = RequestMethod.GET)
+    @RequestMapping(value = "/services/{skip:[\\\\d]+}/{amount:[\\\\d]+}", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount) {
         return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount));
     }
@@ -49,17 +54,17 @@ public class RESTController {
         return serviceDataService.addServiceDto(serviceDto);
     }
 
-    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.GET)
     public ServiceResource getService(@PathVariable int serviceId) {
         return serviceDataService.getServiceResource(serviceId);
     }
 
-    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.DELETE)
     public ServiceResource deleteService(@PathVariable int serviceId) {
         return serviceDataService.deleteService(serviceId);
     }
 
-    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/services/{serviceId:[\\\\d]+}", method = RequestMethod.PUT)
     public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto serviceDto) {
         return serviceDataService.putService(serviceId, serviceDto);
     }
