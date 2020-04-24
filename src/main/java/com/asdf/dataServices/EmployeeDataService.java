@@ -1,6 +1,5 @@
 package com.asdf.dataServices;
 
-import antlr.collections.impl.LList;
 import com.asdf.dataObjects.employee.EmployeeResource;
 import com.asdf.exceptions.ResourceNotFoundException;
 import com.asdf.exceptions.rest.InternalServerException;
@@ -8,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class EmployeeDataService {
