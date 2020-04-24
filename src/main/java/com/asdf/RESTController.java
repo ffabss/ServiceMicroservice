@@ -18,44 +18,50 @@ public class RESTController {
     @Autowired
     private ServiceDataService serviceDataService;
 
-    @RequestMapping(value ="/reset", method = RequestMethod.GET)
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> resetEmployees() {
         return new HttpEntity<>(serviceDataService.resetServiceResources());
     }
-    @RequestMapping(value ="/services", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/services/count", method = RequestMethod.GET)
+    public HttpEntity<Long> countServices() {
+        return new HttpEntity<>(serviceDataService.countServices());
+    }
+
+    @RequestMapping(value = "/services", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getAllServices() {
         return new HttpEntity<>(serviceDataService.getServiceResources());
     }
 
-    @RequestMapping(value ="/employees/clear", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/employees/clear", method = RequestMethod.DELETE)
     public HttpEntity<List<ServiceResource>> deleteAllEmployees() {
         return new HttpEntity<>(serviceDataService.deleteServiceResources());
     }
 
 
-    @RequestMapping(value ="/services/{skip}/{amount}", method = RequestMethod.GET)
-    public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip,@PathVariable int amount) {
-        return new HttpEntity<>(serviceDataService.getServiceResources(skip,amount));
+    @RequestMapping(value = "/services/{skip}/{amount}", method = RequestMethod.GET)
+    public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount) {
+        return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount));
     }
 
-    @RequestMapping(value ="/services", method = RequestMethod.POST)
-    public ServiceResource addService(@RequestBody ServiceDto serviceDto){
+    @RequestMapping(value = "/services", method = RequestMethod.POST)
+    public ServiceResource addService(@RequestBody ServiceDto serviceDto) {
         return serviceDataService.addServiceDto(serviceDto);
     }
 
-    @RequestMapping(value ="/services/{serviceId}", method = RequestMethod.GET)
-    public ServiceResource getService(@PathVariable int serviceId){
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
+    public ServiceResource getService(@PathVariable int serviceId) {
         return serviceDataService.getServiceResource(serviceId);
     }
 
-    @RequestMapping(value ="/services/{serviceId}", method = RequestMethod.DELETE)
-    public ServiceResource deleteService(@PathVariable int serviceId){
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.DELETE)
+    public ServiceResource deleteService(@PathVariable int serviceId) {
         return serviceDataService.deleteService(serviceId);
     }
 
-    @RequestMapping(value ="/services/{serviceId}", method = RequestMethod.PUT)
-    public ServiceResource deleteService(@PathVariable int serviceId,@RequestBody ServiceDto serviceDto){
-        return serviceDataService.putService(serviceId,serviceDto);
+    @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
+    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto serviceDto) {
+        return serviceDataService.putService(serviceId, serviceDto);
     }
 /*
     @RequestMapping(value ="/services/{serviceId}/address", method = RequestMethod.GET)

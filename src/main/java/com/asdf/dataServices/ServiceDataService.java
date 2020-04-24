@@ -198,4 +198,7 @@ public class ServiceDataService {
         return string == null || string.equals("");
     }
 
+    public long countServices() {
+        return serviceManager.countServices();
+    }
 }
