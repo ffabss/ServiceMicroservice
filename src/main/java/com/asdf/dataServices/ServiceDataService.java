@@ -80,7 +80,7 @@ public class ServiceDataService {
 
         List<Integer> ids = employeeDataService.getValidIds();
         int currIDX = 0;
-        String url = String.format("https://my.api.mockaroo.com/servicedto.json?key=e507b8a0?count=%d", amount);
+        String url = String.format("https://api.mockaroo.com/api/bfe87fc0?count=%d&key=e507b8a0", amount);
         RestTemplate restTemplate = new RestTemplate();
         try {
             ServiceDto[] response = restTemplate.getForObject(
