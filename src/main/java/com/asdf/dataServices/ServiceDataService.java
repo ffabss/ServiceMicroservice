@@ -78,26 +78,7 @@ public class ServiceDataService {
         List<ServiceResource> old = deleteServiceResources();
         if (amount > 100) amount = 100;
 
-        List<Integer> ids = employeeDataService.getValidIds();
-        int currIDX = 0;
-        String url = String.format("https://api.mockaroo.com/api/bfe87fc0?count=%d&key=e507b8a0", amount);
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ServiceDto[] response = restTemplate.getForObject(
-                    url,
-                    ServiceDto[].class);
-            for (ServiceDto emp : response) {
-                if (emp.getEmployeeId() == -1) {
-                    emp.setEmployeeId(ids.get(currIDX++));
-                    if (currIDX > ids.size()) {
-                        currIDX = 0;
-                    }
-                }
-                addServiceDto(emp);
-            }
-        } catch (RestClientResponseException e) {
-            throw new InternalServerException(e);
-        }
+        serviceManager.addServices_Mock(amount,employeeDataService.getValidIds());
 
         return old;
     }

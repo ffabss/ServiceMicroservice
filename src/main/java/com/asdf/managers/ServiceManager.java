@@ -1,10 +1,14 @@
 package com.asdf.managers;
 
 import com.asdf.dataObjects.service.Service;
+import com.asdf.dataObjects.service.ServiceDto;
 import com.asdf.dataObjects.service.ServiceEntity;
 import com.asdf.database.ServiceRepository;
+import com.asdf.exceptions.rest.InternalServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -113,5 +117,27 @@ public class ServiceManager {
 
     public long countServices() {
         return serviceRepository.count();
+    }
+
+    public void addServices_Mock(int amount,List<Integer> validIds) {
+        int currIDX = 0;
+        String url = String.format("https://api.mockaroo.com/api/73135ab0?count=%d&key=e507b8a0", amount);
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            Service[] response = restTemplate.getForObject(
+                    url,
+                    Service[].class);
+            for (Service emp : response) {
+                if (emp.getEmployeeId() == -1) {
+                    emp.setEmployeeId(validIds.get(currIDX++));
+                    if (currIDX > validIds.size()) {
+                        currIDX = 0;
+                    }
+                }
+                addService(emp);
+            }
+        } catch (RestClientResponseException e) {
+            throw new InternalServerException(e);
+        }
     }
 }
