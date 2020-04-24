@@ -110,4 +110,8 @@ public class ServiceManager {
     public void deleteAllServiceResources() {
         serviceRepository.deleteAll();
     }
+
+    public long countServices() {
+        return serviceRepository.count();
+    }
 }
