@@ -19,6 +19,8 @@ public class LocationIQDataService {
     private static int currentKeyID = 0;
     private static final String[] API_KEYs = {"<API_KEY>", "<API_KEY>",
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
+            "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
+            "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>"};
 
     private String getCurrentKey() {
@@ -26,9 +28,11 @@ public class LocationIQDataService {
     }
 
     private static void changeKey() {
-        currentKeyID++;
-        if (currentKeyID == API_KEYs.length) {
-            currentKeyID = 0;
+        synchronized (API_KEYs) {
+            currentKeyID++;
+            if (currentKeyID >= API_KEYs.length) {
+                currentKeyID = 0;
+            }
         }
     }
 
@@ -40,13 +44,13 @@ public class LocationIQDataService {
         changeKey();
         if (triesLeft < MAX_TRIES) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
         } else {
             try {
-                Thread.sleep((int) ((500 / API_KEYs.length) * 1.5));
+                Thread.sleep((int) ((500 / API_KEYs.length) * 1.2));
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }

@@ -34,13 +34,13 @@ public class ServiceDataService {
     @Autowired
     private LocationIQDataService locationIQDataService;
 
-    public ServiceResource addServiceDto(ServiceDto serviceDto) {
+    public ServiceResource addServiceDto(ServiceDto serviceDto, boolean address) {
         checkServiceDto(serviceDto);
 
         Service service = serDtoToService(serviceDto);
 
         Service res = serviceManager.addService(service);
-        return serToRes(res);
+        return serToRes(res, address);
     }
 
     private Service serDtoToService(ServiceDto serviceDto) {
@@ -57,39 +57,39 @@ public class ServiceDataService {
     }
 
 
-    public List<ServiceResource> getServiceResources() {
+    public List<ServiceResource> getServiceResources(boolean address) {
         List<ServiceResource> sers = new ArrayList<>();
         for (Service ser : serviceManager.getServices()) {
-            sers.add(serToRes(ser));
+            sers.add(serToRes(ser, address));
         }
         return sers;
     }
 
 
-    public List<ServiceResource> getServiceResources(int skip, int amount) {
+    public List<ServiceResource> getServiceResources(int skip, int amount, boolean address) {
         List<ServiceResource> sers = new ArrayList<>();
         for (Service ser : serviceManager.getServices(skip, amount)) {
-            sers.add(serToRes(ser));
+            sers.add(serToRes(ser, address));
         }
         return sers;
     }
 
-    public List<ServiceResource> resetServiceResources(int amount) {
-        List<ServiceResource> old = deleteServiceResources();
+    public List<ServiceResource> resetServiceResources(int amount, boolean address) {
+        List<ServiceResource> old = deleteServiceResources(address);
         if (amount > 100) amount = 100;
 
-        serviceManager.addServices_Mock(amount,employeeDataService.getValidIds());
+        serviceManager.addServices_Mock(amount, employeeDataService.getValidIds());
 
         return old;
     }
 
-    public List<ServiceResource> deleteServiceResources() {
-        List<ServiceResource> old = getServiceResources();
+    public List<ServiceResource> deleteServiceResources(boolean address) {
+        List<ServiceResource> old = getServiceResources(address);
         serviceManager.deleteAllServiceResources();
         return old;
     }
 
-    private ServiceResource serToRes(Service ser) {
+    private ServiceResource serToRes(Service ser, boolean address) {
         ServiceResource serres = new ServiceResource();
 
         serres.setDate(ser.getDate());
@@ -99,7 +99,7 @@ public class ServiceDataService {
             serres.setEmployee(new EmployeeResource());
         }
         serres.setId(ser.getId());
-        serres.setAddress(locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()));
+        serres.setAddress(address ? locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()) : "");
         serres.setLongitude(ser.getLongitude());
         serres.setLatitude(ser.getLatitude());
         serres.setName(ser.getName());
@@ -107,21 +107,21 @@ public class ServiceDataService {
         return serres;
     }
 
-    public ServiceResource getServiceResource(int serId) {
+    public ServiceResource getServiceResource(int serId, boolean address) {
         if (!serviceManager.serviceExists(serId)) {
             throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serId));
         }
-        return serToRes(serviceManager.getService(serId));
+        return serToRes(serviceManager.getService(serId), address);
     }
 
-    public ServiceResource deleteService(int serId) {
+    public ServiceResource deleteService(int serId, boolean address) {
         if (!serviceManager.serviceExists(serId)) {
             throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serId));
         }
-        return serToRes(serviceManager.deleteService(serId));
+        return serToRes(serviceManager.deleteService(serId), address);
     }
 
-    public ServiceResource putService(int serviceId, ServiceDto serviceDto) {
+    public ServiceResource putService(int serviceId, ServiceDto serviceDto, boolean address) {
         if (!serviceManager.serviceExists(serviceId)) {
             throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serviceId));
         }
@@ -132,15 +132,7 @@ public class ServiceDataService {
 
         serviceManager.putService(serviceId, service);
 
-        return serToRes(service);
-    }
-
-    public String getAddressOfService(int serviceId) {
-        if (!serviceManager.serviceExists(serviceId)) {
-            throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serviceId));
-        }
-
-        return serviceManager.getAddressOfService(serviceId);
+        return serToRes(service, address);
     }
 
     private void checkServiceDto(ServiceDto serviceDto) {
