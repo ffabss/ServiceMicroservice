@@ -17,7 +17,7 @@ public class EmployeeDataService {
 
     public EmployeeResource getEmployee(int emp_id) throws ResourceNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
-        String url = EMPLOYEE_URL + "employees/" + emp_id;
+        String url = EMPLOYEE_URL + "employees/" + emp_id + "?address=false";
         try {
             EmployeeResource response = restTemplate.getForObject(
                     url,
@@ -30,7 +30,7 @@ public class EmployeeDataService {
 
     public List<EmployeeResource> getAllEmployees() {
         RestTemplate restTemplate = new RestTemplate();
-        String url = EMPLOYEE_URL + "employees";
+        String url = EMPLOYEE_URL + "employees?address=false";
         try {
             EmployeeResource[] response = restTemplate.getForObject(
                     url,

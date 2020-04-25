@@ -19,13 +19,13 @@ public class RESTController {
     private ServiceDataService serviceDataService;
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
-    public HttpEntity<List<ServiceResource>> resetEmployees() {
-        return resetEmployees(10);
+    public HttpEntity<List<ServiceResource>> resetEmployees(@RequestParam(defaultValue = "false") boolean address) {
+        return resetEmployees(10, address);
     }
 
     @RequestMapping(value = "/reset/{amount}", method = RequestMethod.GET)
-    public HttpEntity<List<ServiceResource>> resetEmployees(@PathVariable int amount) {
-        return new HttpEntity<>(serviceDataService.resetServiceResources(amount));
+    public HttpEntity<List<ServiceResource>> resetEmployees(@PathVariable int amount, @RequestParam(defaultValue = "false") boolean address) {
+        return new HttpEntity<>(serviceDataService.resetServiceResources(amount, address));
     }
 
     @RequestMapping(value = "/countServices", method = RequestMethod.GET)
@@ -34,38 +34,38 @@ public class RESTController {
     }
 
     @RequestMapping(value = "/services", method = RequestMethod.GET)
-    public HttpEntity<List<ServiceResource>> getAllServices() {
-        return new HttpEntity<>(serviceDataService.getServiceResources());
+    public HttpEntity<List<ServiceResource>> getAllServices(@RequestParam(defaultValue = "true") boolean address) {
+        return new HttpEntity<>(serviceDataService.getServiceResources(address));
     }
 
     @RequestMapping(value = "/clearServices", method = RequestMethod.DELETE)
-    public HttpEntity<List<ServiceResource>> deleteAllEmployees() {
-        return new HttpEntity<>(serviceDataService.deleteServiceResources());
+    public HttpEntity<List<ServiceResource>> deleteAllEmployees(@RequestParam(defaultValue = "true") boolean address) {
+        return new HttpEntity<>(serviceDataService.deleteServiceResources(address));
     }
 
 
     @RequestMapping(value = "/services/{skip}/{amount}", method = RequestMethod.GET)
-    public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount) {
-        return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount));
+    public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount, @RequestParam(defaultValue = "true") boolean address) {
+        return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount, address));
     }
 
     @RequestMapping(value = "/services", method = RequestMethod.POST)
-    public ServiceResource addService(@RequestBody ServiceDto serviceDto) {
-        return serviceDataService.addServiceDto(serviceDto);
+    public ServiceResource addService(@RequestBody ServiceDto serviceDto, @RequestParam(defaultValue = "true") boolean address) {
+        return serviceDataService.addServiceDto(serviceDto, address);
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
-    public ServiceResource getService(@PathVariable int serviceId) {
-        return serviceDataService.getServiceResource(serviceId);
+    public ServiceResource getService(@PathVariable int serviceId, @RequestParam(defaultValue = "true") boolean address) {
+        return serviceDataService.getServiceResource(serviceId, address);
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.DELETE)
-    public ServiceResource deleteService(@PathVariable int serviceId) {
-        return serviceDataService.deleteService(serviceId);
+    public ServiceResource deleteService(@PathVariable int serviceId, @RequestParam(defaultValue = "true") boolean address) {
+        return serviceDataService.deleteService(serviceId, address);
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
-    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto serviceDto) {
-        return serviceDataService.putService(serviceId, serviceDto);
+    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto serviceDto, @RequestParam(defaultValue = "true") boolean address) {
+        return serviceDataService.putService(serviceId, serviceDto, address);
     }
 }

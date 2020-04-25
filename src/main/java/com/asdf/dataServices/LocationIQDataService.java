@@ -17,18 +17,24 @@ public class LocationIQDataService {
 
     private final int MAX_TRIES = 100;
     private static int currentKeyID = 0;
-    private static final String[] API_KEYs = {"34f5a525bf298a", "b06efbe4532f08",
+    private static final String[] API_KEYs = {
+            "34f5a525bf298a", "b06efbe4532f08", "0aa44a6f78974e", "dc255a1a5eeb65",
             "201e218b2b48a4", "1d6c03484794a5", "6ddac64cdf0664", "4f7a4411e0fcbb",
-            "a45f0df77338d9", "21fe6b3316a50b", "e2107f8b1b287f", "d881a7874b8938"};
+            "a45f0df77338d9", "21fe6b3316a50b", "e2107f8b1b287f", "d881a7874b8938",
+            "87f6511faef5e2", "ccf626b97d62f8", "4b9894bd230d4e", "8b2d77f56a8faa",
+            "fd92119e00154b", "c0a8349a8ca075", "b09b6456dbf35c", "4f9628e261ccb8",
+    };
 
     private String getCurrentKey() {
         return API_KEYs[currentKeyID];
     }
 
     private static void changeKey() {
-        currentKeyID++;
-        if (currentKeyID == API_KEYs.length) {
-            currentKeyID = 0;
+        synchronized (API_KEYs) {
+            currentKeyID++;
+            if (currentKeyID >= API_KEYs.length) {
+                currentKeyID = 0;
+            }
         }
     }
 
@@ -40,13 +46,13 @@ public class LocationIQDataService {
         changeKey();
         if (triesLeft < MAX_TRIES) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
         } else {
             try {
-                Thread.sleep((int) ((500 / API_KEYs.length) * 1.5));
+                Thread.sleep((int) ((500 / API_KEYs.length) * 1.2));
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
