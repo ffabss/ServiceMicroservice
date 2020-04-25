@@ -119,7 +119,7 @@ public class ServiceManager {
         return serviceRepository.count();
     }
 
-    public void addServices_Mock(int amount,List<Integer> validIds) {
+    public void addServices_Mock(int amount, List<Integer> validIds) {
         int currIDX = 0;
         String url = String.format("https://api.mockaroo.com/api/73135ab0?count=%d&key=e507b8a0", amount);
         RestTemplate restTemplate = new RestTemplate();
@@ -128,11 +128,15 @@ public class ServiceManager {
                     url,
                     Service[].class);
             for (Service emp : response) {
-                if (emp.getEmployeeId() == -1) {
-                    emp.setEmployeeId(validIds.get(currIDX++));
-                    if (currIDX > validIds.size()) {
-                        currIDX = 0;
+                if (validIds.size() > 0) {
+                    if (emp.getEmployeeId() == -1) {
+                        emp.setEmployeeId(validIds.get(currIDX++));
+                        if (currIDX >= validIds.size()) {
+                            currIDX = 0;
+                        }
                     }
+                } else {
+                    emp.setEmployeeId(-1);
                 }
                 addService(emp);
             }

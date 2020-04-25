@@ -1,6 +1,7 @@
 package com.asdf.dataServices;
 
 import com.asdf.dataObjects.employee.EmployeeResource;
+import com.asdf.dataObjects.location.AddressResource;
 import com.asdf.dataObjects.location.LongitudeLatitude;
 import com.asdf.dataObjects.service.Service;
 import com.asdf.dataObjects.service.ServiceDto;
@@ -99,7 +100,7 @@ public class ServiceDataService {
             serres.setEmployee(new EmployeeResource());
         }
         serres.setId(ser.getId());
-        serres.setAddress(address ? locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()) : "");
+        serres.setAddress(address ? locationIQDataService.getAddress(ser.getLongitude(), ser.getLatitude()) : new AddressResource());
         serres.setLongitude(ser.getLongitude());
         serres.setLatitude(ser.getLatitude());
         serres.setName(ser.getName());
