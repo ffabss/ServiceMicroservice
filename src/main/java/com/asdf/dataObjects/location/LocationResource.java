@@ -16,6 +16,8 @@ public class LocationResource {
     private String lon;
     private String display_name;
     private String type;
+    private String display_place;
+    private AddressResource address;
     private double importance;
     private String icon;
 }
