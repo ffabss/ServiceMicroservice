@@ -57,6 +57,17 @@ public class ServiceDataService {
         return ser;
     }
 
+    private Service serResToService(ServiceResource serviceResource) {
+        Service ser = new Service();
+
+        ser.setDate(serviceResource.getDate());
+        ser.setEmployeeId(serviceResource.getEmployee().getId());
+        ser.setLatitude(serviceResource.getLatitude());
+        ser.setLongitude(serviceResource.getLongitude());
+        ser.setName(serviceResource.getName());
+
+        return ser;
+    }
 
     public List<ServiceResource> getServiceResources(boolean address) {
         List<ServiceResource> sers = new ArrayList<>();
@@ -122,13 +133,13 @@ public class ServiceDataService {
         return serToRes(serviceManager.deleteService(serId), address);
     }
 
-    public ServiceResource putService(int serviceId, ServiceDto serviceDto, boolean address) {
+    public ServiceResource putService(int serviceId, ServiceResource serviceResource, boolean address) {
         if (!serviceManager.serviceExists(serviceId)) {
             throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serviceId));
         }
-        checkServiceDto(serviceDto);
+        checkServiceResource(serviceResource);
 
-        Service service = serDtoToService(serviceDto);
+        Service service = serResToService(serviceResource);
         service.setId(serviceId);
 
         serviceManager.putService(serviceId, service);
@@ -136,15 +147,30 @@ public class ServiceDataService {
         return serToRes(service, address);
     }
 
+    private void checkServiceResource(ServiceResource serviceResource) {
+        if (isNullOrEmpty(serviceResource.getName())) {
+            throw new InvalidDataExceptionMS("The name of the service must be set");
+        }
+        if (serviceResource.getDate() == null) {
+            throw new InvalidDataExceptionMS("The date of the service must be set");
+        }
+        if (isNullOrEmpty(serviceResource.getLatitude())) {
+            throw new InvalidDataExceptionMS("The latitude of the service must be set");
+        }
+        if (isNullOrEmpty(serviceResource.getLongitude())) {
+            throw new InvalidDataExceptionMS("The longitude of the service must be set");
+        }
+    }
+
     private void checkServiceDto(ServiceDto serviceDto) {
         if (isNullOrEmpty(serviceDto.getName())) {
-            throw new InvalidDataExceptionMS("The name of the car must be set");
+            throw new InvalidDataExceptionMS("The name of the service must be set");
         }
         if (serviceDto.getDate() == null) {
-            throw new InvalidDataExceptionMS("The date of the car must be set");
+            throw new InvalidDataExceptionMS("The date of the service must be set");
         }
         if (isNullOrEmpty(serviceDto.getAddress())) {
-            throw new InvalidDataExceptionMS("The address of the car must be set");
+            throw new InvalidDataExceptionMS("The address of the service must be set");
         }
         if (serviceDto.getName().length() <= 4) {
             throw new InvalidDataExceptionMS("The name must be minimum 4 long");
