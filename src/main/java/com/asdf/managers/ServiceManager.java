@@ -34,7 +34,7 @@ public class ServiceManager {
 
     public List<Service> getServices() {
         List<Service> sers = new ArrayList<>();
-        for (ServiceEntity sere : serviceRepository.findAll()) {
+        for (ServiceEntity sere : serviceRepository.findAllOrderById()) {
             sers.add(convertEntityToService(sere));
         }
         return sers;

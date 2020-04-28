@@ -12,4 +12,6 @@ import java.util.List;
 
 @Component
 public interface ServiceRepository extends CrudRepository<ServiceEntity, Integer> {
+    @Query("SELECT s FROM ServiceEntity s ORDER BY s.id ASC")
+    List<ServiceEntity> findAllOrderById();
 }
