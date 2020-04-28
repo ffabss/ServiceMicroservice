@@ -65,7 +65,7 @@ public class RESTController {
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
-    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceResource service, @RequestParam(defaultValue = "true") boolean address) {
+    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto service, @RequestParam(defaultValue = "true") boolean address) {
         return serviceDataService.putService(serviceId, service, address);
     }
 }
