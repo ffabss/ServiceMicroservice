@@ -7,15 +7,12 @@ import com.asdf.dataObjects.service.Service;
 import com.asdf.dataObjects.service.ServiceDto;
 import com.asdf.dataObjects.service.ServiceResource;
 import com.asdf.exceptions.ResourceNotFoundException;
-import com.asdf.exceptions.rest.InternalServerException;
 import com.asdf.exceptions.rest.InvalidDataExceptionMS;
 import com.asdf.exceptions.rest.ResourceNotFoundExceptionMS;
 import com.asdf.managers.ServiceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
 import java.text.ParseException;

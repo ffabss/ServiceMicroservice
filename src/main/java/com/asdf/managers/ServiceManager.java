@@ -1,7 +1,6 @@
 package com.asdf.managers;
 
 import com.asdf.dataObjects.service.Service;
-import com.asdf.dataObjects.service.ServiceDto;
 import com.asdf.dataObjects.service.ServiceEntity;
 import com.asdf.database.ServiceRepository;
 import com.asdf.exceptions.rest.InternalServerException;
