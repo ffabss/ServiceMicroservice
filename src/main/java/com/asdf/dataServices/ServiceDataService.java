@@ -134,17 +134,18 @@ public class ServiceDataService {
     }
 
     public ServiceResource putService(int serviceId, ServiceDto serviceDto, boolean address) {
-        if (!serviceManager.serviceExists(serviceId)) {
-            throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serviceId));
-        }
         checkServiceDto(serviceDto);
 
         Service service = serDtoToService(serviceDto);
         service.setId(serviceId);
+        ServiceResource old = new ServiceResource();
+        if (serviceManager.serviceExists(serviceId)) {
+            old = serToRes(serviceManager.getService(serviceId),address);
+        }
 
         serviceManager.putService(serviceId, service);
 
-        return serToRes(service, address);
+        return old;
     }
 
     private void checkServiceResource(ServiceResource serviceResource) {
