@@ -49,7 +49,8 @@ public class ServiceManager {
         CriteriaQuery<ServiceEntity> criteriaQuery = criteriaBuilder
                 .createQuery(ServiceEntity.class);
         Root<ServiceEntity> from = criteriaQuery.from(ServiceEntity.class);
-        CriteriaQuery<ServiceEntity> select = criteriaQuery.select(from);
+        CriteriaQuery<ServiceEntity> select = criteriaQuery.select(from)
+                .orderBy(criteriaBuilder.asc(from.get("id")));
         TypedQuery<ServiceEntity> typedQuery = entityManager.createQuery(select);
         typedQuery.setFirstResult(skip);
         typedQuery.setMaxResults(amount);
