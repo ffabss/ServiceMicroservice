@@ -38,20 +38,19 @@ public class RESTController {
         return new HttpEntity<>(serviceDataService.getServiceResources(address));
     }
 
+    @RequestMapping(value = "/services", method = RequestMethod.POST)
+    public ServiceResource addService(@RequestBody ServiceDto serviceDto, @RequestParam(defaultValue = "true") boolean address) {
+        return serviceDataService.addServiceDto(serviceDto, address);
+    }
+
     @RequestMapping(value = "/services", method = RequestMethod.DELETE)
     public HttpEntity<List<ServiceResource>> deleteAllEmployees(@RequestParam(defaultValue = "true") boolean address) {
         return new HttpEntity<>(serviceDataService.deleteServiceResources(address));
     }
 
-
     @RequestMapping(value = "/services/{skip}/{amount}", method = RequestMethod.GET)
     public HttpEntity<List<ServiceResource>> getServices(@PathVariable int skip, @PathVariable int amount, @RequestParam(defaultValue = "true") boolean address) {
         return new HttpEntity<>(serviceDataService.getServiceResources(skip, amount, address));
-    }
-
-    @RequestMapping(value = "/services", method = RequestMethod.POST)
-    public ServiceResource addService(@RequestBody ServiceDto serviceDto, @RequestParam(defaultValue = "true") boolean address) {
-        return serviceDataService.addServiceDto(serviceDto, address);
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
@@ -65,7 +64,7 @@ public class RESTController {
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.PUT)
-    public ServiceResource deleteService(@PathVariable int serviceId, @RequestBody ServiceDto service, @RequestParam(defaultValue = "true") boolean address) {
+    public ServiceResource putService(@PathVariable int serviceId, @RequestBody ServiceDto service, @RequestParam(defaultValue = "true") boolean address) {
         return serviceDataService.putService(serviceId, service, address);
     }
 }
