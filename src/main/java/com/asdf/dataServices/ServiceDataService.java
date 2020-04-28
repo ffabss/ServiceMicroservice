@@ -133,13 +133,13 @@ public class ServiceDataService {
         return serToRes(serviceManager.deleteService(serId), address);
     }
 
-    public ServiceResource putService(int serviceId, ServiceResource serviceResource, boolean address) {
+    public ServiceResource putService(int serviceId, ServiceDto serviceDto, boolean address) {
         if (!serviceManager.serviceExists(serviceId)) {
             throw new ResourceNotFoundExceptionMS(String.format("The service with the id %d could not be found", serviceId));
         }
-        checkServiceResource(serviceResource);
+        checkServiceDto(serviceDto);
 
-        Service service = serResToService(serviceResource);
+        Service service = serDtoToService(serviceDto);
         service.setId(serviceId);
 
         serviceManager.putService(serviceId, service);
