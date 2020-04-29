@@ -21,17 +21,13 @@ public class LocationIQDataService {
     private static final String LOCATION_IQ_URL = "https://eu1.locationiq.com/v1/search.php?key={apiKey}&q={searchString}&format=json&limit=1";
     private static final String LOCATION_IQ_REVERSE_URL = "https://eu1.locationiq.com/v1/reverse.php?key={apiKey}&lat={lat}&lon={lon}&format=json";
 
-    private final int MAX_TRIES = 100;
-    private static int currentKeyID = 0;
-    private static final String[] API_KEYs = {"<API_KEY>", "<API_KEY>",
+    private static final String[] API_KEYs = {
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>",
             "<API_KEY>", "<API_KEY>", "<API_KEY>", "<API_KEY>"};
-
-    private String getCurrentKey() {
-        return API_KEYs[currentKeyID];
-    }
+    private static int currentKeyID = 0;
+    private final int MAX_TRIES = 100;
 
     private static void changeKey() {
         synchronized (API_KEYs) {
@@ -40,6 +36,10 @@ public class LocationIQDataService {
                 currentKeyID = 0;
             }
         }
+    }
+
+    private String getCurrentKey() {
+        return API_KEYs[currentKeyID];
     }
 
     public LongitudeLatitude getLongitudeLatitudeByAddress(AddressResource address) {

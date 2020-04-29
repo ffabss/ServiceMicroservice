@@ -137,7 +137,7 @@ public class ServiceDataService {
         service.setId(serviceId);
         ServiceResource old = new ServiceResource();
         if (serviceManager.serviceExists(serviceId)) {
-            old = serToRes(serviceManager.getService(serviceId),address);
+            old = serToRes(serviceManager.getService(serviceId), address);
         }
 
         serviceManager.putService(serviceId, service);
@@ -170,10 +170,10 @@ public class ServiceDataService {
         if (isNullOrEmpty(serviceDto.getAddress())) {
             throw new InvalidDataExceptionMS("The address of the service must be set");
         }
-        if (serviceDto.getName().length() <= 4) {
+        if (serviceDto.getName().length() < 4) {
             throw new InvalidDataExceptionMS("The name must be minimum 4 long");
         }
-        if (serviceDto.getAddress().length() <= 5) {
+        if (serviceDto.getAddress().length() < 5) {
             throw new InvalidDataExceptionMS("The address must be minimum 5 long");
         }
         if (serviceDto.getDate() == null) {
