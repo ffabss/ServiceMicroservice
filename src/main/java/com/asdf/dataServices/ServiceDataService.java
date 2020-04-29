@@ -137,7 +137,7 @@ public class ServiceDataService {
         service.setId(serviceId);
         ServiceResource old = new ServiceResource();
         if (serviceManager.serviceExists(serviceId)) {
-            old = serToRes(serviceManager.getService(serviceId),address);
+            old = serToRes(serviceManager.getService(serviceId), address);
         }
 
         serviceManager.putService(serviceId, service);

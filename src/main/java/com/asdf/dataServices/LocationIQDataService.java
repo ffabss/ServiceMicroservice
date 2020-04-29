@@ -20,9 +20,6 @@ import java.util.Map;
 public class LocationIQDataService {
     private static final String LOCATION_IQ_URL = "https://eu1.locationiq.com/v1/search.php?key={apiKey}&q={searchString}&format=json&limit=1";
     private static final String LOCATION_IQ_REVERSE_URL = "https://eu1.locationiq.com/v1/reverse.php?key={apiKey}&lat={lat}&lon={lon}&format=json";
-
-    private final int MAX_TRIES = 100;
-    private static int currentKeyID = 0;
     private static final String[] API_KEYs = {
             "34f5a525bf298a", "b06efbe4532f08", "0aa44a6f78974e", "dc255a1a5eeb65",
             "201e218b2b48a4", "1d6c03484794a5", "6ddac64cdf0664", "4f7a4411e0fcbb",
@@ -30,10 +27,8 @@ public class LocationIQDataService {
             "87f6511faef5e2", "ccf626b97d62f8", "4b9894bd230d4e", "8b2d77f56a8faa",
             "fd92119e00154b", "c0a8349a8ca075", "b09b6456dbf35c", "4f9628e261ccb8",
     };
-
-    private String getCurrentKey() {
-        return API_KEYs[currentKeyID];
-    }
+    private static int currentKeyID = 0;
+    private final int MAX_TRIES = 100;
 
     private static void changeKey() {
         synchronized (API_KEYs) {
@@ -42,6 +37,10 @@ public class LocationIQDataService {
                 currentKeyID = 0;
             }
         }
+    }
+
+    private String getCurrentKey() {
+        return API_KEYs[currentKeyID];
     }
 
     public LongitudeLatitude getLongitudeLatitudeByAddress(AddressResource address) {
